@@ -18,6 +18,12 @@ public class ClientesService implements CommandLineRunner {
 
 	@Autowired
 	private ClientesRepository clientesrepository;
+	
+	//servicio de autenticación
+	public Clientes authenticate(String nombre, Integer pin) {
+        return clientesrepository.findByNombreAndPin(nombre, pin);
+    }
+	
 
 	//que actúa como una capa intermedia entre el controlador y el repositorio en una arquitectura típica de Spring MVC.
 	
@@ -58,44 +64,62 @@ public class ClientesService implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 
 	
-		//Insertamos datos predeterminados para cuando se inicie la aplicacion se inserten directamente en la base de datos
-	
-		System.out.print("Insertando datos");
-
-		Clientes cliente = new Clientes();
-
-		cliente.setNombre("Pepe");
-		cliente.setApellido("Ferguson");
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		Date fechaNacimiento = dateFormat.parse("2012-12-12");
-
-		cliente.setFecha_nacimiento(fechaNacimiento); // Establecer la fecha de nacimiento como la fecha actual
-		cliente.setDireccion("Calle Principal 123");
-		cliente.setTelefono(123456789);
-		cliente.setCorreo("pepe@example.com");
-
-		// Guardar el cliente en la base de datos
-		clientesrepository.save(cliente);
-		System.out.println("Datos insertados correctamente.");
-		
-		
-		
-	 // Insertar segundo cliente
-	    Clientes cliente2 = new Clientes();
-	    cliente2.setNombre("Ana");
-	    cliente2.setApellido("Martínez");
-	    Date fechaNacimiento2 = dateFormat.parse("1990-05-25");
-	    cliente2.setFecha_nacimiento(fechaNacimiento2);
-	    cliente2.setDireccion("Avenida Central 456");
-	    cliente2.setTelefono(987654321);
-	    cliente2.setCorreo("ana@example.com");
-	    
-	    clientesrepository.save(cliente2);
-	    System.out.println("Datos insertados correctamente.");
-
-	
+		 insertarDatosPredeterminados();
 
 		
 	}
+	
+	
+	  private void insertarDatosPredeterminados() throws Exception {
+	        System.out.println("Insertando datos predeterminados");
 
+	        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+	        if (clientesrepository.findByNombreAndPin("Pepe", 1234) == null) {
+	            Clientes cliente1 = new Clientes();
+	            cliente1.setNombre("Pepe");
+	            cliente1.setApellido("Ferguson");
+	            cliente1.setFecha_nacimiento(dateFormat.parse("2012-12-12"));
+	            cliente1.setDireccion("Calle Principal 123");
+	            cliente1.setTelefono(123456789);
+	            cliente1.setCorreo("pepe@example.com");
+	            cliente1.setPin(1234);
+	            clientesrepository.save(cliente1);
+	            System.out.println("Datos del cliente Pepe insertados correctamente.");
+	        }
+
+	        if (clientesrepository.findByNombreAndPin("Ana", 5432) == null) {
+	            Clientes cliente2 = new Clientes();
+	            cliente2.setNombre("Ana");
+	            cliente2.setApellido("Martínez");
+	            cliente2.setFecha_nacimiento(dateFormat.parse("1990-05-25"));
+	            cliente2.setDireccion("Avenida Central 456");
+	            cliente2.setTelefono(987654321);
+	            cliente2.setCorreo("ana@example.com");
+	            cliente2.setPin(5432);
+	            clientesrepository.save(cliente2);
+	            System.out.println("Datos del cliente Ana insertados correctamente.");
+	        }
+	        
+	        if (clientesrepository.findByNombreAndPin("Carlos", 6789) == null) {
+	            Clientes cliente3 = new Clientes();
+	            cliente3.setNombre("Carlos");
+	            cliente3.setApellido("Lopez");
+	            cliente3.setFecha_nacimiento(dateFormat.parse("1985-03-15"));
+	            cliente3.setDireccion("Calle Secundaria 789");
+	            cliente3.setTelefono(112233445);
+	            cliente3.setCorreo("carlos@example.com");
+	            cliente3.setPin(6789);
+	            clientesrepository.save(cliente3);
+	            System.out.println("Datos del cliente Carlos insertados correctamente.");
+	        }
+	        
+	        
+	        
+	        
+	
+	
+	
+	
+	  }
 }

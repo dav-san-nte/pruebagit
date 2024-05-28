@@ -26,7 +26,6 @@ public class Clientes {
 	private String nombre;
 	@Column
 	private String apellido;
-
 	@Temporal(TemporalType.DATE)
 	@Column(name = "fecha_nacimiento")
 	private Date fecha_nacimiento;
@@ -36,14 +35,17 @@ public class Clientes {
 	private Integer telefono;
 	@Column
 	private String correo;
+	@Column
+	private Integer pin;
 	
+
 	//Cliente - Cuentas relacion (1-n)
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
 	private List<Cuentas> cuentas;
 	
 
 	public Clientes(String nombre, String apellido, Date fecha_nacimiento, String direccion,
-			Integer telefono, String corre, List<Cuentas> cuentas) {
+			Integer telefono, String corre, List<Cuentas> cuentas, Integer pin) {
 		super();
 		this.nombre = nombre;
 		this.apellido = apellido;
@@ -52,6 +54,7 @@ public class Clientes {
 		this.telefono = telefono;
 		this.correo = corre;
 		this.cuentas = cuentas;
+		this.pin = pin;
 	}
 	
 	
@@ -124,8 +127,14 @@ public class Clientes {
 	}
 	
 	
-	
-	
+	public Integer getPin() {
+		return pin;
+	}
+
+
+	public void setPin(Integer pin) {
+		this.pin = pin;
+	}
 	
 	
 	
